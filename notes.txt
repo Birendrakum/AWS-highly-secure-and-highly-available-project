@@ -1,0 +1,87 @@
+# Sample resource recieved to lambda by eventbridge
+{
+  "source": "aws.guardduty",
+  "detail-type": "GuardDuty Finding",
+  "detail": {
+    "id": "abcd1234",
+    "type": "UnauthorizedAccess:EC2/SSHBruteForce",
+    "severity": 8,
+    "resource": {
+      "resourceType": "Instance"
+    },
+    "service": {
+      "action": {
+        "networkConnectionAction": {
+          "remoteIpDetails": {
+            "ipAddressV4": "1.2.3.4"
+          }
+        }
+      }
+    }
+  }
+}
+
+# Response for describe_auto_scaling_groups
+
+cmd: asg_response = autoscaling.describe_auto_scaling_groups( AutoScalingGroupNames=[ASG_NAME] )
+{
+    'AutoScalingGroups': [
+        {
+            'AutoScalingGroupName': 'WebServerASG',
+            'MinSize': 1,
+            'MaxSize': 6,
+            'DesiredCapacity': 2,
+            'Instances': [
+                {
+                    'InstanceId': 'i-0123456789abcdef0',
+                    'LifecycleState': 'InService',
+                    'HealthStatus': 'Healthy'
+                },
+                {
+                    'InstanceId': 'i-0fedcba9876543210',
+                    'LifecycleState': 'InService',
+                    'HealthStatus': 'Healthy'
+                }
+            ],
+            'TargetGroupARNs': [
+                'arn:aws:elasticloadbalancing:...'
+            ]
+        }
+    ]
+}
+
+# Response for ec2 describe instance
+Cmd: response = ec2.describe_instances(InstanceIds=[instance_id])
+
+{
+    "Reservations": [
+        {
+            "ReservationId": "r-123456",
+            "Instances": [
+                {
+                    "InstanceId": "i-0123456789abcdef0",
+                    "InstanceType": "t3.micro",
+                    "State": {
+                        "Name": "running"
+                    },
+                    "VpcId": "vpc-12345678",
+                    "SubnetId": "subnet-87654321",
+                    "PrivateIpAddress": "10.0.1.15",
+                    "PublicIpAddress": "54.123.45.67",
+                    "SecurityGroups": [
+                        {
+                            "GroupId": "sg-12345678",
+                            "GroupName": "web-sg"
+                        }
+                    ],
+                    "Tags": [
+                        {
+                            "Key": "Name",
+                            "Value": "WebServer1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
