@@ -83,7 +83,7 @@ resource "aws_lb" "WebServerLB" {
     }
 }
 
-resource "aws_lb_target_group" "WebServerLB-TG" {
+resource "aws_lb_target_group" "WebServerLB_TG" {
     name = "WebServerLB-TG"
     port = 80
     protocol = "HTTP"
@@ -101,7 +101,7 @@ resource "aws_lb_target_group" "WebServerLB-TG" {
     }
 }
 
-resource "aws_target_group_attachment" "WebServerLB-TG-Attachment" {
+resource "aws_target_group_attachment" "WebServerLB_TG_Attachment" {
     target_group_arn = aws_lb_target_group.WebServerLB-TG.arn
     target_id = aws_autoscaling_group.WebServerASG.id
     port = 80
@@ -117,7 +117,7 @@ resource "aws_lb_listener" "WebServerLB-Listener" {
     }
 }
 
-resource "aws_scaling_policy" "WebServerASG-ScaleOut" {
+resource "aws_scaling_policy" "WebServerASG_ScaleOut" {
     name = "WebServerASG-ScaleOut"
     scaling_adjustment = 1
     adjustment_type = "ChangeInCapacity"
@@ -126,7 +126,7 @@ resource "aws_scaling_policy" "WebServerASG-ScaleOut" {
     policy_type = "SimpleScaling"
 }
 
-resource "aws_cloudwatch_metric_alarm" "WebServerASG-HighCPU" {
+resource "aws_cloudwatch_metric_alarm" "WebServerASG_HighCPU" {
     alarm_name = "WebServerASG-HighCPU"
     comparison_operator = "GreaterThanThreshold"
     evaluation_periods = 1
@@ -142,7 +142,7 @@ resource "aws_cloudwatch_metric_alarm" "WebServerASG-HighCPU" {
     alarm_actions = [aws_scaling_policy.WebServerASG-ScaleOut.arn]
 }
 
-resource "aws_scaling_policy" "WebServerASG-ScaleIn" {
+resource "aws_scaling_policy" "WebServerASG_ScaleIn" {
     name = "WebServerASG-ScaleIn"
     scaling_adjustment = -1
     adjustment_type = "ChangeInCapacity"
@@ -151,7 +151,7 @@ resource "aws_scaling_policy" "WebServerASG-ScaleIn" {
     policy_type = "SimpleScaling"
 }
 
-resource "aws_cloudwatch_metric_alarm" "WebServerASG-LowCPU" {
+resource "aws_cloudwatch_metric_alarm" "WebServerASG_LowCPU" {
     alarm_name = "WebServerASG-LowCPU"
     comparison_operator = "LessThanThreshold"
     evaluation_periods = 1
@@ -168,7 +168,7 @@ resource "aws_cloudwatch_metric_alarm" "WebServerASG-LowCPU" {
 }
 
 # Backup Webserver ASG
-resource "aws_autoscaling_group" "Backup-WebServerASG" {
+resource "aws_autoscaling_group" "Backup_WebServerASG" {
     name = "Backup-WebServerASG"
     max_size = 20
     min_size = 1

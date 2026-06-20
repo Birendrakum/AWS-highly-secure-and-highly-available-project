@@ -1,5 +1,5 @@
-resource "aws_eventbridge_rule" "Health-Report-Rule" {
-    name = "health-Report-Rule"
+resource "aws_eventbridge_rule" "Health_Report_Rule" {
+    name = "health-report-rule"
     description = "Trigger Lambda function to generate health reports based on hourly basis"
     destination = aws_lambda_function.HealthReportGenerator.arn
     event_pattern = jsonencode({

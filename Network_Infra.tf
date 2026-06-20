@@ -81,12 +81,22 @@ resource "aws_route_table" "PublicRT" {
 }
 
 resource "aws_route_table_association" "PublicA" {
-    subnet_id = [aws_subnet.PublicA.id, aws_subnet.PublicB.id]
+    subnet_id = aws_subnet.PublicA.id
+    route_table_id = aws_route_table.PublicRT.id
+}
+
+resource "aws_route_table_association" "PublicB" {
+    subnet_id = aws_subnet.PublicB.id
     route_table_id = aws_route_table.PublicRT.id
 }
 
 resource "aws_route_table_association" "PrivateA" {
-    subnet_id = [aws_subnet.PrivateA.id, aws_subnet.PrivateB.id]
+    subnet_id = aws_subnet.PrivateA.id
+    route_table_id = aws_route_table.PrivateRT.id
+}
+
+resource "aws_route_table_association" "PrivateB" {
+    subnet_id = aws_subnet.PrivateB.id
     route_table_id = aws_route_table.PrivateRT.id
 }
 

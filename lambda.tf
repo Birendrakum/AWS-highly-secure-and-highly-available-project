@@ -39,7 +39,7 @@ resource "aws_lambda_function" "SecurityIncidentHandler" {
     function_name = "SecurityIncidentHandler"
     runtime = "python3.8"
     role = aws_iam_role.LambdaIncidentHandler-Role.arn
-    handler = "lambda_Incident_function.lambda_incident_Handler"
+    handler = "lambda_Incident_function.lambda_incident_handler"
     filename = "lambda_function.zip"
     source_code_hash = filebase64sha256("lambda_function.zip")
     environment {
