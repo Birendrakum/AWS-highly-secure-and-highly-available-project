@@ -1,9 +1,9 @@
-resource "AWS_EC2_template" "WebServerTemplate" {
+resource "aws_launch_template" "WebServerTemplate" {
     name = "WebServerTemplate"
     description = "EC2 Template for Web Servers"
     image_id = "ami-0c55b159cbfafe1f0" # replace with a valid AMI ID for your region
     instance_type = "t2.micro"
-    key_name = ./key_pem
+    key_name = "key_pem"
     security_group_ids = [aws_security_group.WebServerSG.id]
     user_data = <<-EOF
                 apt update -y
@@ -76,7 +76,7 @@ resource "aws_lb" "WebServerLB" {
     name = "WebServerLB"
     internal = false
     load_balancer_type = "application"
-    security_groups = [aws_security_group.LB-SG.id]
+    security_groups = [aws_security_group.LB_SG.id]
     subnets = [aws_subnet.PublicA.id, aws_subnet.PublicB.id]
     tags = {
         Name = "WebServerLB"
@@ -102,18 +102,18 @@ resource "aws_lb_target_group" "WebServerLB_TG" {
 }
 
 resource "aws_target_group_attachment" "WebServerLB_TG_Attachment" {
-    target_group_arn = aws_lb_target_group.WebServerLB-TG.arn
+    target_group_arn = [aws_lb_target_group.WebServerLB_TG.arn]
     target_id = aws_autoscaling_group.WebServerASG.id
     port = 80
 }
 
-resource "aws_lb_listener" "WebServerLB-Listener" {
+resource "aws_lb_listener" "WebServerLB_Listener" {
     load_balancer_arn = aws_lb.WebServerLB.arn
     port = 80
     protocol = "HTTP"
     default_action {
         type = "forward"
-        target_group_arn = aws_lb_target_group.WebServerLB-TG.arn
+        target_group_arn = aws_lb_target_group.WebServerLB_TG.arn
     }
 }
 
@@ -139,7 +139,7 @@ resource "aws_cloudwatch_metric_alarm" "WebServerASG_HighCPU" {
     period = 300
     statistic = "Average"
     threshold = 70
-    alarm_actions = [aws_scaling_policy.WebServerASG-ScaleOut.arn]
+    alarm_actions = [aws_scaling_policy.WebServerASG_ScaleOut.arn]
 }
 
 resource "aws_scaling_policy" "WebServerASG_ScaleIn" {
@@ -164,7 +164,7 @@ resource "aws_cloudwatch_metric_alarm" "WebServerASG_LowCPU" {
     period = 300
     statistic = "Average"
     threshold = 20
-    alarm_actions = [aws_scaling_policy.WebServerASG-ScaleIn.arn]
+    alarm_actions = [aws_scaling_policy.WebServerASG_ScaleIn.arn]
 }
 
 # Backup Webserver ASG

@@ -108,11 +108,11 @@ resource "aws_security_group" "WebServerSG" {
         from_port = 80
         to_port = 80
         protocol = "tcp"
-        security_groups = [aws_security_group.LB-SG.id]
+        security_groups = [aws_security_group.LB_SG.id]
     }
 }
 
-resource "aws_security_group" "LB-SG" {
+resource "aws_security_group" "LB_SG" {
     name = "LoadBalancerSG"
     description = "Security group for Load Balancer"
     vpc_id = aws_vpc.VPC.id
@@ -124,7 +124,7 @@ resource "aws_security_group" "LB-SG" {
     }
 }
 
-resource "aws_security_group" "Isolated-SG" {
+resource "aws_security_group" "Isolated_SG" {
     name = "IsolatedSG"
     description = "Security group for isolated instances"
     vpc_id = aws_vpc.VPC.id

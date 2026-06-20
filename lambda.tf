@@ -50,7 +50,7 @@ resource "aws_lambda_function" "SecurityIncidentHandler" {
             BACKUP_ASG_NAME = aws_autoscaling_group.Backup-WebServerASG.name
             WAF_IP_SET_ID   = aws_wafv2_ip_set.blocked_ips.id
             WAF_IP_SET_NAME = aws_wafv2_ip_set.blocked_ips.name
-            QUARANTINE_SG_ID = aws_security_group.Isolated-SG.id
+            QUARANTINE_SG_ID = aws_security_group.Isolated_SG.id
             TARGET_GROUP_ARN = aws_lb_target_group.WebServerLB-TG.arn
             AWS_VPC_ID = aws_vpc.VPC.id
         }
